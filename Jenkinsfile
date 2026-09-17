@@ -1,27 +1,29 @@
 pipeline {
     agent any
-    
-    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select the deployment environment')
-    }
-    
     stages {
-        stage('Checkout') {
+        stage ('Checkout') {
             steps {
                 // Replace <student-username> and <repo-name> with your actual GitHub details
-                git branch: 'main', url: 'https://github.com/Maddy19032006/ASS7.git'
+                git branch: 'Q3', url: 'https://github.com/Maddy19032006/ASS7.git'
             }
         }
-        
-        stage('Show Parameter') {
-            steps {
-                echo "Selected environment: ${params.ENVIRONMENT}"
+        stage ('Parallel Checks') {
+            parallel {
+                stage('Frontend Check') {
+                    steps {
+                        bat 'python frontend_check.py'
+                    }
+                }
+                stage ('Backend Check') {
+                    steps {
+                        bat 'python backend_check.py'
+                    }
+                }
             }
         }
-        
-        stage('Build for Environment') {
+        stage('Summary') {
             steps {
-                echo "Building the application for the ${params.ENVIRONMENT} environment..."
+                echo 'Both frontend and backend checks are complete.'
             }
         }
     }
