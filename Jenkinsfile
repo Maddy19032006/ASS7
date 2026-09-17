@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Replace <student-username> and <repo-name> with your actual GitHub details
-                git branch: 'main', url: 'https://github.com<student-username>/<repo-name>.git'
+                git branch: 'main', url: 'https://github.com/Maddy19032006/ASS7.git'
             }
         }
         
