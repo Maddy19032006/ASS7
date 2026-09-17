@@ -1,27 +1,20 @@
 pipeline {
     agent any
-    
-    parameters {
-        choice(name: 'ENVIRONMENT', choices: ['dev', 'staging', 'prod'], description: 'Select the deployment environment')
-    }
-    
     stages {
-        stage('Checkout') {
+        stage ('Checkout') {
             steps {
                 // Replace <student-username> and <repo-name> with your actual GitHub details
-                git branch: 'main', url: 'https://github.com/Maddy19032006/ASS7.git'
+                git branch: 'Q2', url: 'https://github.com/Maddy19032006/ASS7.git'
             }
         }
-        
-        stage('Show Parameter') {
+        stage ('Generate Report') {
             steps {
-                echo "Selected environment: ${params.ENVIRONMENT}"
+                bat 'python app.py'
             }
         }
-        
-        stage('Build for Environment') {
+        stage ('Archive Report') {
             steps {
-                echo "Building the application for the ${params.ENVIRONMENT} environment..."
+                archiveArtifacts artifacts: 'report.txt', fingerprint: true
             }
         }
     }
